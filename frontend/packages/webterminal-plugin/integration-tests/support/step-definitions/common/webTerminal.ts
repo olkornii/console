@@ -2,6 +2,7 @@ import { Given, When, Then, And } from 'cypress-cucumber-preprocessor/steps';
 import { guidedTour } from '@console/cypress-integration-tests/views/guided-tour';
 import { switchPerspective } from '@console/dev-console/integration-tests/support/constants';
 import { devNavigationMenuPO } from '@console/dev-console/integration-tests/support/pageObjects';
+import { adminNavigationMenuPO } from '@console/dev-console/integration-tests/support/pageObjects';
 import {
   perspective,
   projectNameSpace,
@@ -90,5 +91,8 @@ And('user has logged in as basic user', () => {
 
 Given('user has created or selected namespace {string}', (projectName: string) => {
   Cypress.env('NAMESPACE', projectName);
+  // move to workload/topology page as "Project" page does not contain dropdown menu in regular user perspective.
+  cy.get(adminNavigationMenuPO.workloads.main).click();
+  cy.get(devNavigationMenuPO.topology).click();
   projectNameSpace.selectOrCreateProject(`${projectName}`);
 });
